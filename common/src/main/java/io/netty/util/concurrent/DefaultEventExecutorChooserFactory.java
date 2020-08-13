@@ -29,6 +29,13 @@ public final class DefaultEventExecutorChooserFactory implements EventExecutorCh
 
     private DefaultEventExecutorChooserFactory() { }
 
+    /**
+     * 基于策略来选择对应的策略类
+     * 策略：
+     * 如果是2的平方，则采用 {@link PowerOfTwoEventExecutorChooser}，否则使用  {@link GenericEventExecutorChooser}
+     * @param executors
+     * @return
+     */
     @SuppressWarnings("unchecked")
     @Override
     public EventExecutorChooser newChooser(EventExecutor[] executors) {

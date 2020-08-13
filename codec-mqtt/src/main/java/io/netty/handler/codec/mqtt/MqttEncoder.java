@@ -35,7 +35,9 @@ import static io.netty.handler.codec.mqtt.MqttCodecUtil.*;
  */
 @ChannelHandler.Sharable
 public final class MqttEncoder extends MessageToMessageEncoder<MqttMessage> {
-
+    /**
+     * 饿汉式单例范例
+     */
     public static final MqttEncoder INSTANCE = new MqttEncoder();
 
     private MqttEncoder() { }

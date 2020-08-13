@@ -242,13 +242,16 @@ import java.nio.charset.UnsupportedCharsetException;
  *
  * <h4>I/O Streams</h4>
  *
+ * 装饰者模式：装饰者的基类为 {@link WrappedByteBuf}，它保存被装饰者的引用
+ *
+ *
  * Please refer to {@link ByteBufInputStream} and
  * {@link ByteBufOutputStream}.
  */
 public abstract class ByteBuf implements ReferenceCounted, Comparable<ByteBuf> {
 
     /**
-     * Returns the number of bytes (octets) this buffer can contain.
+     * Returns the number of bytes (octets) this buffer can contain.（容量）
      */
     public abstract int capacity();
 
@@ -263,12 +266,13 @@ public abstract class ByteBuf implements ReferenceCounted, Comparable<ByteBuf> {
     public abstract ByteBuf capacity(int newCapacity);
 
     /**
-     * Returns the maximum allowed capacity of this buffer. This value provides an upper
+     * Returns the maximum allowed capacity of this buffer. This value provides an upper（最大容量）
      * bound on {@link #capacity()}.
      */
     public abstract int maxCapacity();
 
     /**
+     * 分配器
      * Returns the {@link ByteBufAllocator} which created this buffer.
      */
     public abstract ByteBufAllocator alloc();

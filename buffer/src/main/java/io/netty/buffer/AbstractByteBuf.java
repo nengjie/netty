@@ -68,10 +68,29 @@ public abstract class AbstractByteBuf extends ByteBuf {
     static final ResourceLeakDetector<ByteBuf> leakDetector =
             ResourceLeakDetectorFactory.instance().newResourceLeakDetector(ByteBuf.class);
 
+    /**
+     * 读指针
+     */
     int readerIndex;
+
+    /**
+     * 写指针
+     */
     int writerIndex;
+
+    /**
+     * mark之后的读指针
+     */
     private int markedReaderIndex;
+
+    /**
+     * mark之后的写指针
+     */
     private int markedWriterIndex;
+
+    /**
+     * 最大容量
+     */
     private int maxCapacity;
 
     protected AbstractByteBuf(int maxCapacity) {
@@ -297,6 +316,7 @@ public abstract class AbstractByteBuf extends ByteBuf {
                     writerIndex, minWritableBytes, maxCapacity, this));
         }
 
+        // 扩容两倍
         // Normalize the target capacity to the power of 2.
         final int fastWritable = maxFastWritableBytes();
         int newCapacity = fastWritable >= minWritableBytes ? writerIndex + fastWritable
@@ -308,9 +328,11 @@ public abstract class AbstractByteBuf extends ByteBuf {
 
     @Override
     public int ensureWritable(int minWritableBytes, boolean force) {
+        // 检查是否可以访问
         ensureAccessible();
         checkPositiveOrZero(minWritableBytes, "minWritableBytes");
 
+        // 如果目前还有空前，直接返回可以写的状态
         if (minWritableBytes <= writableBytes()) {
             return 0;
         }
@@ -330,6 +352,7 @@ public abstract class AbstractByteBuf extends ByteBuf {
         int newCapacity = fastWritable >= minWritableBytes ? writerIndex + fastWritable
                 : alloc().calculateNewCapacity(writerIndex + minWritableBytes, maxCapacity);
 
+        // 扩容，由具体的子类去完成
         // Adjust to the new capacity.
         capacity(newCapacity);
         return 2;

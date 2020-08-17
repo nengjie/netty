@@ -94,6 +94,7 @@ public class UnpooledDirectByteBuf extends AbstractReferenceCountedByteBuf {
         this.alloc = alloc;
         doNotFree = !doFree;
         setByteBuffer((slice ? initialBuffer.slice() : initialBuffer).order(ByteOrder.BIG_ENDIAN), false);
+        // 设置读索引
         writerIndex(initialCapacity);
     }
 
@@ -140,6 +141,7 @@ public class UnpooledDirectByteBuf extends AbstractReferenceCountedByteBuf {
 
     @Override
     public ByteBuf capacity(int newCapacity) {
+        // 校验新的容量，不能超过最大容量
         checkNewCapacity(newCapacity);
         int oldCapacity = capacity;
         if (newCapacity == oldCapacity) {
@@ -633,6 +635,9 @@ public class UnpooledDirectByteBuf extends AbstractReferenceCountedByteBuf {
         return ((ByteBuffer) buffer.duplicate().position(index).limit(index + length)).slice();
     }
 
+    /**
+     * 当引用计数为 0 时，调用该方法，进行内存回收
+     */
     @Override
     protected void deallocate() {
         ByteBuffer buffer = this.buffer;

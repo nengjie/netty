@@ -1486,6 +1486,10 @@ public abstract class AbstractByteBuf extends ByteBuf {
         checkReadableBytes0(checkPositiveOrZero(minimumReadableBytes, "minimumReadableBytes"));
     }
 
+    /**
+     * 校验新的容量不能超过最大的容量
+     * @param newCapacity
+     */
     protected final void checkNewCapacity(int newCapacity) {
         ensureAccessible();
         if (checkBounds && (newCapacity < 0 || newCapacity > maxCapacity())) {
